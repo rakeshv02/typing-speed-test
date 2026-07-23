@@ -8,179 +8,252 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-78VZWJ5B1W"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-78VZWJ5B1W');</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7039091592734005" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f172a;color:#f1f5f9;min-height:100vh}nav{background:#1e293b;border-bottom:1px solid #334155;padding:14px 24px;display:flex;align-items:center;gap:16px}nav a{color:#94a3b8;text-decoration:none;font-size:14px}nav a:hover{color:#f1f5f9}nav .brand{color:#38bdf8;font-weight:700;font-size:18px}.ad-banner{background:#1e293b;border-bottom:1px solid #334155;padding:8px;text-align:center}</style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f172a;color:#f1f5f9;min-height:100vh}
+nav{background:#1e293b;border-bottom:1px solid #334155;padding:14px 24px;display:flex;align-items:center;gap:16px}
+nav a{color:#94a3b8;text-decoration:none;font-size:14px}nav a:hover{color:#f1f5f9}
+nav .brand{color:#38bdf8;font-weight:700;font-size:18px}
+.ad-banner{background:#1e293b;border-bottom:1px solid #334155;padding:8px;text-align:center}
+#app{max-width:660px;margin:40px auto;padding:0 20px}
+h1{font-size:28px;font-weight:700;text-align:center;margin-bottom:8px}
+.subtitle{text-align:center;color:#94a3b8;margin-bottom:24px}
+.stats-bar{display:flex;gap:24px;justify-content:center;margin-bottom:20px}
+.stat{text-align:center}
+.stat-num{font-family:monospace;font-size:32px;font-weight:700;line-height:1}
+.stat-lbl{font-size:12px;color:#64748b;margin-top:3px}
+.passage-card{background:#1e293b;border-radius:16px;padding:20px;border:1px solid #334155;margin-bottom:12px;line-height:2;font-size:18px;font-family:monospace;letter-spacing:.3px;min-height:80px}
+.ch-pending{color:#475569}
+.ch-correct{color:#22c55e}
+.ch-wrong{color:#ef4444;background:#2d1515;border-radius:2px}
+.ch-cursor{background:rgba(56,189,248,.25);border-radius:2px;color:#f1f5f9}
+#type-area{width:100%;background:#1e293b;color:#f1f5f9;border:2px solid #334155;border-radius:12px;padding:14px;font-size:16px;font-family:monospace;resize:none;min-height:72px;outline:none;margin-bottom:12px;transition:border-color .2s}
+#type-area:focus{border-color:#38bdf8}
+#type-area.active{border-color:#38bdf8}
+.controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.ctrl-btn{border-radius:8px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #334155;background:#1e293b;color:#94a3b8;transition:all .15s}
+.ctrl-btn.active{background:#38bdf8;color:#0f172a;border-color:#38bdf8}
+.ctrl-btn.restart{background:#334155;color:#f1f5f9}
+#finish-card{background:#1e293b;border-radius:20px;padding:36px 24px;text-align:center;border:2px solid #22c55e;margin-bottom:20px;display:none}
+#finish-wpm{font-family:monospace;font-size:88px;font-weight:800;line-height:1}
+#finish-rating{font-size:20px;font-weight:600;margin-bottom:4px}
+.finish-stats{display:flex;gap:24px;justify-content:center;margin:20px 0 28px}
+.finish-stat-num{font-size:24px;font-weight:700}
+.finish-stat-lbl{font-size:13px;color:#64748b}
+#try-again-btn{background:#22c55e;color:#0f172a;border:none;border-radius:12px;padding:14px 36px;font-size:17px;font-weight:700;cursor:pointer}
+.history-card{background:#1e293b;border-radius:16px;border:1px solid #334155;overflow:hidden;display:none}
+.history-header{padding:13px 18px;border-bottom:1px solid #334155;font-size:13px;color:#64748b;font-weight:600}
+.hist-row{padding:9px 18px;border-bottom:1px solid #0f172a;display:flex;justify-content:space-between;font-size:14px}
+</style>
 </head>
 <body>
 <nav><span class="brand">⚡ Tabutility</span><a href="https://tabutility.com">← All Tools</a></nav>
 <div class="ad-banner"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7039091592734005" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
-<div id="root"></div>
-<script type="text/babel">
-//<![CDATA[
-const { useState, useEffect, useRef, useCallback } = React;
+<div id="app">
+  <h1>Typing Speed Test</h1>
+  <p class="subtitle">How fast do you type? Measure your WPM and accuracy.</p>
 
-const PASSAGES = [
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num" id="stat-wpm" style="color:#38bdf8">0</div><div class="stat-lbl">WPM</div></div>
+    <div class="stat"><div class="stat-num" id="stat-acc" style="color:#22c55e">100%</div><div class="stat-lbl">Accuracy</div></div>
+    <div class="stat"><div class="stat-num" id="stat-time" style="color:#f1f5f9">0s</div><div class="stat-lbl">Time</div></div>
+  </div>
+
+  <div id="finish-card">
+    <div style="font-size:20px;margin-bottom:12px">🎉 Test Complete!</div>
+    <div id="finish-wpm"></div>
+    <div style="font-size:18px;color:#94a3b8;margin-bottom:4px">WPM</div>
+    <div id="finish-rating"></div>
+    <div class="finish-stats">
+      <div class="stat"><div class="finish-stat-num" id="fin-acc"></div><div class="finish-stat-lbl">Accuracy</div></div>
+      <div class="stat"><div class="finish-stat-num" id="fin-time"></div><div class="finish-stat-lbl">Time</div></div>
+      <div class="stat"><div class="finish-stat-num" id="fin-words"></div><div class="finish-stat-lbl">Words</div></div>
+    </div>
+    <button id="try-again-btn" onclick="restart()">Try Again</button>
+  </div>
+
+  <div class="passage-card" id="passage-display"></div>
+  <textarea id="type-area" placeholder="Start typing here…" oninput="onType()" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
+  <div class="controls" id="controls"></div>
+
+  <div class="history-card" id="history-card">
+    <div class="history-header">RECENT RESULTS</div>
+    <div id="history-list"></div>
+  </div>
+</div>
+<script>
+var PASSAGES = [
   "The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs. How vexingly quick daft zebras jump. The five boxing wizards jump quickly.",
   "Success is not final, failure is not fatal: it is the courage to continue that counts. In the middle of every difficulty lies opportunity. It always seems impossible until it is done.",
-  "Technology is best when it brings people together. The advance of technology is based on making it fit in so that you don't really even notice it. Any sufficiently advanced technology is indistinguishable from magic.",
+  "Technology is best when it brings people together. The advance of technology is based on making it fit in so that you don't really even notice it, so it becomes something that is part of everyday life.",
   "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment. Not all those who wander are lost. All we have to decide is what to do with the time that is given to us.",
-  "The universe is under no obligation to make sense to you. We are all made of star stuff. Somewhere, something incredible is waiting to be known. Science knows no country, because knowledge belongs to humanity.",
+  "The universe is under no obligation to make sense to you. We are all made of star stuff. Somewhere, something incredible is waiting to be known. Science knows no country, because knowledge belongs to humanity."
 ];
 
 function wpmRating(wpm) {
-  if (wpm < 30) return { label: 'Beginner', color: '#ef4444' };
-  if (wpm < 50) return { label: 'Average', color: '#f59e0b' };
-  if (wpm < 70) return { label: 'Good', color: '#22c55e' };
-  if (wpm < 100) return { label: 'Fast', color: '#38bdf8' };
-  return { label: 'Expert', color: '#a855f7' };
+  if (wpm < 30)  return { label:'Beginner',  color:'#ef4444' };
+  if (wpm < 50)  return { label:'Average',   color:'#f59e0b' };
+  if (wpm < 70)  return { label:'Good',      color:'#22c55e' };
+  if (wpm < 100) return { label:'Fast',      color:'#38bdf8' };
+  return               { label:'Expert',    color:'#a855f7' };
 }
 
-export default function TypingTest() {
-  const [passageIdx, setPassageIdx] = useState(0);
-  const [passage, setPassage] = useState(PASSAGES[0]);
-  const [typed, setTyped] = useState('');
-  const [started, setStarted] = useState(false);
-  const [finished, setFinished] = useState(false);
-  const [startTime, setStartTime] = useState(null);
-  const [elapsed, setElapsed] = useState(0);
-  const [wpm, setWpm] = useState(0);
-  const [accuracy, setAccuracy] = useState(100);
-  const [history, setHistory] = useState([]);
-  const inputRef = useRef(null);
-  const timerRef = useRef(null);
+var passageIdx = 0;
+var passage = PASSAGES[0];
+var typed = '';
+var started = false;
+var finished = false;
+var startTime = null;
+var elapsed = 0;
+var timerInterval = null;
+var statInterval = null;
+var history = [];
 
-  useEffect(() => {
-    if (started && !finished) {
-      timerRef.current = setInterval(() => {
-        const e = (Date.now() - startTime) / 1000;
-        setElapsed(e);
-        const words = typed.trim().split(/\s+/).filter(Boolean).length;
-        setWpm(Math.round(words / (e / 60)));
-      }, 200);
+var typeArea   = document.getElementById('type-area');
+var statWpm    = document.getElementById('stat-wpm');
+var statAcc    = document.getElementById('stat-acc');
+var statTime   = document.getElementById('stat-time');
+var finCard    = document.getElementById('finish-card');
+var passageEl  = document.getElementById('passage-display');
+
+function renderPassage() {
+  var html = '';
+  for (var i = 0; i < passage.length; i++) {
+    var ch = passage[i] === ' ' ? '&nbsp;' : passage[i];
+    if (i < typed.length) {
+      html += '<span class="' + (typed[i] === passage[i] ? 'ch-correct' : 'ch-wrong') + '">' + ch + '</span>';
+    } else if (i === typed.length) {
+      html += '<span class="ch-cursor">' + ch + '</span>';
+    } else {
+      html += '<span class="ch-pending">' + ch + '</span>';
     }
-    return () => clearInterval(timerRef.current);
-  }, [started, finished, typed, startTime]);
-
-  const handleChange = (e) => {
-    const val = e.target.value;
-    if (!started && val.length > 0) { setStarted(true); setStartTime(Date.now()); }
-    setTyped(val);
-
-    // Accuracy
-    let correct = 0;
-    for (let i = 0; i < val.length; i++) {
-      if (val[i] === passage[i]) correct++;
-    }
-    const acc = val.length > 0 ? Math.round((correct / val.length) * 100) : 100;
-    setAccuracy(acc);
-
-    if (val.length >= passage.length) {
-      clearInterval(timerRef.current);
-      const finalElapsed = (Date.now() - startTime) / 1000;
-      const words = passage.trim().split(/\s+/).length;
-      const finalWpm = Math.round(words / (finalElapsed / 60));
-      setWpm(finalWpm);
-      setFinished(true);
-      setHistory(h => [{wpm: finalWpm, acc, time: new Date().toLocaleTimeString()}, ...h.slice(0,9)]);
-    }
-  };
-
-  const reset = (idx) => {
-    const i = idx !== undefined ? idx : passageIdx;
-    setPassageIdx(i); setPassage(PASSAGES[i]);
-    setTyped(''); setStarted(false); setFinished(false);
-    setStartTime(null); setElapsed(0); setWpm(0); setAccuracy(100);
-    clearInterval(timerRef.current);
-    setTimeout(() => inputRef.current && inputRef.current.focus(), 50);
-  };
-
-  const words = passage.split('');
-  const rating = wpmRating(wpm);
-
-  return (
-    <div style={{maxWidth:680,margin:'40px auto',padding:'0 20px'}}>
-      <h1 style={{textAlign:'center',fontSize:28,fontWeight:700,marginBottom:8}}>Typing Speed Test</h1>
-      <p style={{textAlign:'center',color:'#94a3b8',marginBottom:24}}>How fast do you type? Measure your WPM and accuracy.</p>
-
-      {!finished && (
-        <>
-          <div style={{display:'flex',gap:20,justifyContent:'center',marginBottom:20}}>
-            <div style={{textAlign:'center'}}>
-              <div style={{fontFamily:'monospace',fontSize:32,fontWeight:700,color:'#38bdf8'}}>{started?wpm:0}</div>
-              <div style={{fontSize:12,color:'#64748b'}}>WPM</div>
-            </div>
-            <div style={{textAlign:'center'}}>
-              <div style={{fontFamily:'monospace',fontSize:32,fontWeight:700,color:accuracy>=95?'#22c55e':accuracy>=80?'#f59e0b':'#ef4444'}}>{accuracy}%</div>
-              <div style={{fontSize:12,color:'#64748b'}}>Accuracy</div>
-            </div>
-            <div style={{textAlign:'center'}}>
-              <div style={{fontFamily:'monospace',fontSize:32,fontWeight:700,color:'#f1f5f9'}}>{Math.floor(elapsed)}s</div>
-              <div style={{fontSize:12,color:'#64748b'}}>Time</div>
-            </div>
-          </div>
-
-          <div style={{background:'#1e293b',borderRadius:16,padding:20,border:'1px solid #334155',marginBottom:16,lineHeight:2,fontSize:18,fontFamily:'monospace',letterSpacing:0.5}}>
-            {words.map((char, i) => {
-              let color = '#475569';
-              if (i < typed.length) {
-                color = typed[i] === char ? '#22c55e' : '#ef4444';
-              } else if (i === typed.length) {
-                color = '#f1f5f9';
-              }
-              return (
-                <span key={i} style={{color, background: i === typed.length ? 'rgba(56,189,248,0.2)' : 'transparent', borderRadius: 2}}>{char}</span>
-              );
-            })}
-          </div>
-
-          <textarea ref={inputRef} value={typed} onChange={handleChange} disabled={finished}
-            placeholder="Start typing here…"
-            style={{width:'100%',background:'#1e293b',color:'#f1f5f9',border:'2px solid',borderColor:started?'#38bdf8':'#334155',borderRadius:12,padding:'14px',fontSize:16,fontFamily:'monospace',resize:'vertical',minHeight:80,outline:'none',transition:'border-color 0.2s'}}/>
-
-          <div style={{display:'flex',gap:8,justifyContent:'center',marginTop:12,flexWrap:'wrap'}}>
-            <button onClick={() => reset()} style={{background:'#334155',color:'#f1f5f9',border:'none',borderRadius:8,padding:'8px 20px',fontSize:14,cursor:'pointer'}}>Restart</button>
-            {PASSAGES.map((_,i) => (
-              <button key={i} onClick={() => reset(i)} style={{background:passageIdx===i?'#38bdf8':'#1e293b',color:passageIdx===i?'#0f172a':'#64748b',border:'1px solid #334155',borderRadius:8,padding:'8px 14px',fontSize:13,cursor:'pointer'}}>Text {i+1}</button>
-            ))}
-          </div>
-        </>
-      )}
-
-      {finished && (
-        <div style={{background:'#1e293b',borderRadius:20,padding:'40px 24px',border:'2px solid #22c55e',textAlign:'center',marginBottom:24}}>
-          <div style={{fontSize:20,marginBottom:16}}>🎉 Test Complete!</div>
-          <div style={{fontFamily:'monospace',fontSize:80,fontWeight:800,color:rating.color,lineHeight:1}}>{wpm}</div>
-          <div style={{fontSize:20,color:'#94a3b8',marginBottom:4}}>WPM</div>
-          <div style={{fontSize:18,fontWeight:600,color:rating.color,marginBottom:20}}>{rating.label}</div>
-          <div style={{display:'flex',gap:24,justifyContent:'center',marginBottom:28}}>
-            <div><div style={{fontSize:24,fontWeight:700,color:accuracy>=95?'#22c55e':'#f59e0b'}}>{accuracy}%</div><div style={{fontSize:13,color:'#64748b'}}>Accuracy</div></div>
-            <div><div style={{fontSize:24,fontWeight:700,color:'#f1f5f9'}}>{Math.round(elapsed)}s</div><div style={{fontSize:13,color:'#64748b'}}>Time</div></div>
-            <div><div style={{fontSize:24,fontWeight:700,color:'#f1f5f9'}}>{passage.trim().split(/\s+/).length}</div><div style={{fontSize:13,color:'#64748b'}}>Words</div></div>
-          </div>
-          <button onClick={() => reset()} style={{background:'#22c55e',color:'#0f172a',border:'none',borderRadius:12,padding:'14px 36px',fontSize:18,fontWeight:700,cursor:'pointer'}}>Try Again</button>
-        </div>
-      )}
-
-      {history.length > 0 && (
-        <div style={{background:'#1e293b',borderRadius:16,padding:16,border:'1px solid #334155'}}>
-          <h2 style={{fontSize:15,fontWeight:600,marginBottom:10}}>Recent Results</h2>
-          {history.map((h,i) => (
-            <div key={i} style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'1px solid #0f172a',fontSize:14}}>
-              <span style={{color:'#64748b'}}>{h.time}</span>
-              <span style={{color:wpmRating(h.wpm).color,fontWeight:700}}>{h.wpm} WPM</span>
-              <span style={{color:'#94a3b8'}}>{h.acc}% accuracy</span>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  }
+  passageEl.innerHTML = html;
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<TypingTest />);
-//]]>
+function calcAccuracy() {
+  if (!typed.length) return 100;
+  var correct = 0;
+  for (var i = 0; i < typed.length; i++) {
+    if (typed[i] === passage[i]) correct++;
+  }
+  return Math.round(correct / typed.length * 100);
+}
+
+function calcWpm() {
+  if (!elapsed) return 0;
+  var words = typed.trim().split(/\s+/).filter(Boolean).length;
+  return Math.round(words / (elapsed / 60));
+}
+
+function updateStats() {
+  var acc = calcAccuracy();
+  var wpm = calcWpm();
+  statWpm.textContent = wpm;
+  statWpm.style.color = wpmRating(wpm).color;
+  statAcc.textContent = acc + '%';
+  statAcc.style.color = acc >= 95 ? '#22c55e' : acc >= 80 ? '#f59e0b' : '#ef4444';
+  statTime.textContent = Math.floor(elapsed) + 's';
+}
+
+function onType() {
+  if (finished) return;
+  typed = typeArea.value;
+
+  if (!started && typed.length > 0) {
+    started = true;
+    startTime = Date.now();
+    statInterval = setInterval(function() {
+      elapsed = (Date.now() - startTime) / 1000;
+      updateStats();
+    }, 200);
+    typeArea.classList.add('active');
+  }
+
+  renderPassage();
+
+  if (typed.length >= passage.length) {
+    clearInterval(statInterval);
+    elapsed = (Date.now() - startTime) / 1000;
+    var finalWpm = Math.round(passage.trim().split(/\s+/).length / (elapsed / 60));
+    var finalAcc = calcAccuracy();
+    finished = true;
+    typeArea.disabled = true;
+    showFinish(finalWpm, finalAcc);
+  }
+}
+
+function showFinish(wpm, acc) {
+  var rating = wpmRating(wpm);
+  document.getElementById('finish-wpm').textContent = wpm;
+  document.getElementById('finish-wpm').style.color = rating.color;
+  document.getElementById('finish-rating').textContent = rating.label;
+  document.getElementById('finish-rating').style.color = rating.color;
+  document.getElementById('fin-acc').textContent = acc + '%';
+  document.getElementById('fin-acc').style.color = acc >= 95 ? '#22c55e' : '#f59e0b';
+  document.getElementById('fin-time').textContent = Math.round(elapsed) + 's';
+  document.getElementById('fin-words').textContent = passage.trim().split(/\s+/).length;
+  finCard.style.display = 'block';
+  history.unshift({ wpm: wpm, acc: acc, time: new Date().toLocaleTimeString() });
+  if (history.length > 10) history.pop();
+  renderHistory();
+}
+
+function restart(idx) {
+  clearInterval(statInterval);
+  if (idx !== undefined) passageIdx = idx;
+  passage = PASSAGES[passageIdx];
+  typed = ''; started = false; finished = false;
+  startTime = null; elapsed = 0;
+  typeArea.value = '';
+  typeArea.disabled = false;
+  typeArea.classList.remove('active');
+  finCard.style.display = 'none';
+  statWpm.textContent = '0';
+  statAcc.textContent = '100%';
+  statTime.textContent = '0s';
+  statWpm.style.color = '#38bdf8';
+  statAcc.style.color = '#22c55e';
+  renderPassage();
+  renderControls();
+  setTimeout(function(){ typeArea.focus(); }, 50);
+}
+
+function renderControls() {
+  var el = document.getElementById('controls');
+  el.innerHTML = '';
+  var rb = document.createElement('button');
+  rb.className = 'ctrl-btn restart'; rb.textContent = 'Restart';
+  rb.onclick = function(){ restart(); };
+  el.appendChild(rb);
+  PASSAGES.forEach(function(_, i) {
+    var b = document.createElement('button');
+    b.className = 'ctrl-btn' + (i === passageIdx ? ' active' : '');
+    b.textContent = 'Text ' + (i+1);
+    b.onclick = function(){ restart(i); };
+    el.appendChild(b);
+  });
+}
+
+function renderHistory() {
+  var card = document.getElementById('history-card');
+  var list = document.getElementById('history-list');
+  if (!history.length) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  list.innerHTML = '';
+  history.forEach(function(h) {
+    var row = document.createElement('div'); row.className = 'hist-row';
+    var r = wpmRating(h.wpm);
+    row.innerHTML =
+      '<span style="color:#64748b">'+h.time+'</span>'+
+      '<span style="color:'+r.color+';font-weight:700">'+h.wpm+' WPM</span>'+
+      '<span style="color:#94a3b8">'+h.acc+'% accuracy</span>';
+    list.appendChild(row);
+  });
+}
+
+renderPassage();
+renderControls();
 </script>
 </body>
 </html>
